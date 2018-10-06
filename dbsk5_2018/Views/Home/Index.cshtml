@@ -1,0 +1,33 @@
+﻿@using System.Data
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Students</h2>
+@{
+    DataTable StudentsTable = ViewBag.AllStudentsTable;
+    string tableHeader = "List of all students";
+}
+<table>
+    <caption>@tableHeader</caption>
+    <tr>
+        @foreach (DataColumn dataColumn in ViewBag.AllStudentsTable.Columns)
+        {
+            <th>@dataColumn.ColumnName</th>
+        }
+    </tr>
+    @foreach (DataRow studentRow in ViewBag.AllStudentsTable.Rows)
+    {
+        <tr>
+            @for (int i = 0; i < ViewBag.AllStudentsTable.Columns.Count; ++i)
+            {
+                <td>@studentRow[i]</td>
+            }
+            <td>@Html.ActionLink("Delete", "DeleteStudent", "Home", new { id = studentRow["id"] }, new { title = "Click to delete student " + studentRow["name"] })</td>
+        </tr>
+    }
+</table>
+<p>No students listed? Click one of the links below:</p>
+<!--This code demonstrates two different ways to create links in the Razor view engine -->
+@Html.ActionLink("Reset the database", "ResetDB", "Home", null, new { title = "Click to restore the database" })
+<br />
+<a href="@Url.Action("ResetDB", "Home")" title="Click to restore the database">Reset the database</a>
